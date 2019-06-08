@@ -1,0 +1,20 @@
+C:\Users\hean05\Desktop\UEd\UEd\bin\Debug\UEd.exe.config
+C:\Users\hean05\Desktop\UEd\UEd\bin\Debug\UEd.exe
+C:\Users\hean05\Desktop\UEd\UEd\bin\Debug\UEd.pdb
+C:\Users\hean05\Desktop\UEd\UEd\obj\Debug\UEd.csprojAssemblyReference.cache
+C:\Users\hean05\Desktop\UEd\UEd\obj\Debug\UEd.Form1.resources
+C:\Users\hean05\Desktop\UEd\UEd\obj\Debug\UEd.Properties.Resources.resources
+C:\Users\hean05\Desktop\UEd\UEd\obj\Debug\UEd.csproj.GenerateResource.cache
+C:\Users\hean05\Desktop\UEd\UEd\obj\Debug\UEd.csproj.CoreCompileInputs.cache
+C:\Users\hean05\Desktop\UEd\UEd\obj\Debug\UEd.exe
+C:\Users\hean05\Desktop\UEd\UEd\obj\Debug\UEd.pdb
+C:\Users\Anders Hesselbom\Desktop\UEd\UEd\bin\Debug\UEd.exe.config
+C:\Users\Anders Hesselbom\Desktop\UEd\UEd\bin\Debug\UEd.exe
+C:\Users\Anders Hesselbom\Desktop\UEd\UEd\bin\Debug\UEd.pdb
+C:\Users\Anders Hesselbom\Desktop\UEd\UEd\obj\Debug\UEd.csprojAssemblyReference.cache
+C:\Users\Anders Hesselbom\Desktop\UEd\UEd\obj\Debug\UEd.Properties.Resources.resources
+C:\Users\Anders Hesselbom\Desktop\UEd\UEd\obj\Debug\UEd.csproj.GenerateResource.cache
+C:\Users\Anders Hesselbom\Desktop\UEd\UEd\obj\Debug\UEd.csproj.CoreCompileInputs.cache
+C:\Users\Anders Hesselbom\Desktop\UEd\UEd\obj\Debug\UEd.exe
+C:\Users\Anders Hesselbom\Desktop\UEd\UEd\obj\Debug\UEd.pdb
+C:\Users\Anders Hesselbom\Desktop\UEd\UEd\obj\Debug\UEd.MainWindow.resources
