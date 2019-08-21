@@ -35,21 +35,23 @@ namespace UEd
             }
         }
 
-        public void KeyPress(char c, CharacterArea area, CharacterView view)
+        public bool KeyPress(char c, CharacterArea area, CharacterView view)
         {
             switch ((int)c)
             {
                 case 8:
                     area.TypeBackspace(view);
-                    return;
+                    return true;
                 case 10:
-                    return;
+                    return false;
                 case 13:
                     area.TypeEnter(view);
-                    return;
+                    return true;
             }
-            if (area.TypeCharacter(c, view))
-                area.MoveLeft(view);
+            if (!area.TypeCharacter(c, view))
+                return false;
+            area.MoveLeft(view);
+            return true;
         }
     }
 }

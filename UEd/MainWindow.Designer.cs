@@ -30,22 +30,65 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newDocumentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.openDocumentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.restoreZoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openRecentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.noRecentDocumentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
             this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(884, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newDocumentToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.openDocumentToolStripMenuItem,
+            this.openRecentToolStripMenuItem,
+            this.toolStripMenuItem2,
+            this.quitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
+            this.fileToolStripMenuItem.Text = "&File";
+            // 
+            // newDocumentToolStripMenuItem
+            // 
+            this.newDocumentToolStripMenuItem.Name = "newDocumentToolStripMenuItem";
+            this.newDocumentToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.newDocumentToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.newDocumentToolStripMenuItem.Text = "&New document...";
+            this.newDocumentToolStripMenuItem.Click += new System.EventHandler(this.NewDocumentToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(199, 6);
+            // 
+            // openDocumentToolStripMenuItem
+            // 
+            this.openDocumentToolStripMenuItem.Name = "openDocumentToolStripMenuItem";
+            this.openDocumentToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.openDocumentToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.openDocumentToolStripMenuItem.Text = "&Open document...";
+            this.openDocumentToolStripMenuItem.Click += new System.EventHandler(this.OpenDocumentToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 
@@ -54,8 +97,8 @@
             this.restoreZoomToolStripMenuItem,
             this.zoomOutToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.viewToolStripMenuItem.Text = "View";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
+            this.viewToolStripMenuItem.Text = "&View";
             this.viewToolStripMenuItem.DropDownOpened += new System.EventHandler(this.viewToolStripMenuItem_DropDownOpened);
             // 
             // zoomInToolStripMenuItem
@@ -63,7 +106,7 @@
             this.zoomInToolStripMenuItem.Name = "zoomInToolStripMenuItem";
             this.zoomInToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemplus)));
             this.zoomInToolStripMenuItem.ShowShortcutKeys = false;
-            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.zoomInToolStripMenuItem.Text = "Zoom in (Ctrl+)";
             this.zoomInToolStripMenuItem.Click += new System.EventHandler(this.zoomInToolStripMenuItem_Click);
             // 
@@ -72,7 +115,7 @@
             this.restoreZoomToolStripMenuItem.Name = "restoreZoomToolStripMenuItem";
             this.restoreZoomToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D0)));
             this.restoreZoomToolStripMenuItem.ShowShortcutKeys = false;
-            this.restoreZoomToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.restoreZoomToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.restoreZoomToolStripMenuItem.Text = "Restore zoom to 100% (Ctrl 0)";
             this.restoreZoomToolStripMenuItem.Click += new System.EventHandler(this.restoreZoomToolStripMenuItem_Click);
             // 
@@ -81,9 +124,36 @@
             this.zoomOutToolStripMenuItem.Name = "zoomOutToolStripMenuItem";
             this.zoomOutToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.OemMinus)));
             this.zoomOutToolStripMenuItem.ShowShortcutKeys = false;
-            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.zoomOutToolStripMenuItem.Text = "Zoom out (Ctrl -)";
             this.zoomOutToolStripMenuItem.Click += new System.EventHandler(this.zoomOutToolStripMenuItem_Click);
+            // 
+            // openRecentToolStripMenuItem
+            // 
+            this.openRecentToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.noRecentDocumentsToolStripMenuItem});
+            this.openRecentToolStripMenuItem.Name = "openRecentToolStripMenuItem";
+            this.openRecentToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.openRecentToolStripMenuItem.Text = "Open recent";
+            // 
+            // noRecentDocumentsToolStripMenuItem
+            // 
+            this.noRecentDocumentsToolStripMenuItem.Enabled = false;
+            this.noRecentDocumentsToolStripMenuItem.Name = "noRecentDocumentsToolStripMenuItem";
+            this.noRecentDocumentsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.noRecentDocumentsToolStripMenuItem.Text = "No recent documents";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(199, 6);
+            // 
+            // quitToolStripMenuItem
+            // 
+            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.quitToolStripMenuItem.Text = "Quit";
+            this.quitToolStripMenuItem.Click += new System.EventHandler(this.QuitToolStripMenuItem_Click);
             // 
             // MainWindow
             // 
@@ -98,6 +168,8 @@
             this.MinimumSize = new System.Drawing.Size(500, 300);
             this.Name = "MainWindow";
             this.Text = "U-Ed";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainWindow_FormClosed);
+            this.Shown += new System.EventHandler(this.MainWindow_Shown);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
@@ -116,6 +188,14 @@
         private System.Windows.Forms.ToolStripMenuItem zoomInToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem restoreZoomToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem zoomOutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newDocumentToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem openDocumentToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openRecentToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem noRecentDocumentsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
     }
 }
 

@@ -18,3 +18,23 @@ C:\Users\Anders Hesselbom\Desktop\UEd\UEd\obj\Debug\UEd.csproj.CoreCompileInputs
 C:\Users\Anders Hesselbom\Desktop\UEd\UEd\obj\Debug\UEd.exe
 C:\Users\Anders Hesselbom\Desktop\UEd\UEd\obj\Debug\UEd.pdb
 C:\Users\Anders Hesselbom\Desktop\UEd\UEd\obj\Debug\UEd.MainWindow.resources
+C:\Users\hean05\Desktop\UEd-master\UEd\obj\Debug\UEd.csprojAssemblyReference.cache
+C:\Users\hean05\Desktop\UEd-master\UEd\obj\Debug\UEd.exe
+C:\Users\hean05\Desktop\UEd-master\UEd\obj\Debug\UEd.pdb
+C:\Users\hean05\Desktop\UEd-master\UEd\bin\Debug\UEd.exe.config
+C:\Users\hean05\Desktop\UEd-master\UEd\bin\Debug\UEd.exe
+C:\Users\hean05\Desktop\UEd-master\UEd\bin\Debug\UEd.pdb
+C:\Users\hean05\Desktop\UEd-master\UEd\obj\Debug\UEd.MainWindow.resources
+C:\Users\hean05\Desktop\UEd-master\UEd\obj\Debug\UEd.Properties.Resources.resources
+C:\Users\hean05\Desktop\UEd-master\UEd\obj\Debug\UEd.csproj.GenerateResource.cache
+C:\Users\hean05\Desktop\UEd-master\UEd\obj\Debug\UEd.csproj.CoreCompileInputs.cache
+C:\Repos\UEd\UEd\obj\Debug\UEd.csprojAssemblyReference.cache
+C:\Repos\UEd\UEd\obj\Debug\UEd.exe
+C:\Repos\UEd\UEd\obj\Debug\UEd.pdb
+C:\Repos\UEd\UEd\bin\Debug\UEd.exe.config
+C:\Repos\UEd\UEd\bin\Debug\UEd.exe
+C:\Repos\UEd\UEd\bin\Debug\UEd.pdb
+C:\Repos\UEd\UEd\obj\Debug\UEd.MainWindow.resources
+C:\Repos\UEd\UEd\obj\Debug\UEd.Properties.Resources.resources
+C:\Repos\UEd\UEd\obj\Debug\UEd.csproj.GenerateResource.cache
+C:\Repos\UEd\UEd\obj\Debug\UEd.csproj.CoreCompileInputs.cache

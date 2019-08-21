@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 namespace UEd
@@ -10,14 +13,43 @@ namespace UEd
         private readonly CharacterArea _area = new CharacterArea();
         private readonly CharacterView _view = new CharacterView();
         private readonly InputHandler _inputHandler = new InputHandler();
+        private readonly List<ToolStripMenuItem> _recentMenuItems = new List<ToolStripMenuItem>();
+        private readonly RecentFileManager _recentFileManager = new RecentFileManager();
         private bool _recalcFontSize = true;
         private int ViewportWidth => ClientRectangle.Width;
         private int ViewportHeight => ClientRectangle.Height - menuStrip1.Height;
+        private string _filename;
+        private bool _changed;
 
         public MainWindow()
         {
             InitializeComponent();
         }
+
+        private string Filename
+        {
+            get => _filename;
+            set
+            {
+                _filename = value;
+                UpdateWindowText();
+            }
+        }
+
+        private bool Changed
+        {
+            get => _changed;
+            set
+            {
+                _changed = value;
+                UpdateWindowText();
+            }
+        }
+
+        private void UpdateWindowText() =>
+            Text = string.IsNullOrWhiteSpace(_filename)
+                ? $"U-Ed{(Changed ? "*" : "")}"
+                : $"U-Ed - {Filename}{(Changed ? "*" : "")}";
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -89,7 +121,8 @@ namespace UEd
 
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            _inputHandler.KeyPress(e.KeyChar, _area, _view);
+            if (_inputHandler.KeyPress(e.KeyChar, _area, _view))
+                Changed = true;
             Invalidate();
         }
 
@@ -152,6 +185,71 @@ namespace UEd
             _view.EnsurePositionIsVisible(_area.CursorX, _area.CursorY);
             _recalcFontSize = true;
             Invalidate();
+        }
+
+        private void NewDocumentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Changed = false;
+            Filename = "";
+            _area.Clear();
+            Invalidate();
+        }
+
+        private void OpenDocumentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            const string title = "Open document";
+            using (var x = new OpenFileDialog())
+            {
+                x.Title = $@"{title} (max 100 Mb)";
+                x.Filter = @"All files (*.*)|*.*";
+                if (x.ShowDialog() != DialogResult.OK)
+                    return;
+                var fi = new FileInfo(x.FileName);
+                if (fi.Length > 104857600)
+                {
+                    MessageBox.Show(@"The file is too large. Maximum size is 100 Mb.", title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                Cursor = Cursors.WaitCursor;
+                string fileContent;
+                try
+                {
+                    using (var sr = new StreamReader(fi.FullName, Encoding.UTF8))
+                    {
+                        fileContent = sr.ReadToEnd();
+                        sr.Close();
+                    }
+                }
+                catch
+                {
+                    Cursor = Cursors.Default;
+                    MessageBox.Show(@"The file is too large. Maximum size is 100 Mb.", title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                _area.SetData(fileContent);
+                _view.OffsetX = 0;
+                _view.OffsetY = 0;
+                Filename = fi.FullName;
+                Changed = false;
+                Invalidate();
+                Cursor = Cursors.Default;
+            }
+        }
+
+        private void QuitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //TODO: Save.
+            Close();
+        }
+
+        private void MainWindow_Shown(object sender, EventArgs e)
+        {
+            var recentItems = _recentFileManager.Load();
+        }
+
+        private void MainWindow_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
         }
     }
 }

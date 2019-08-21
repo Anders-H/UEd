@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace UEd
 {
@@ -17,6 +18,21 @@ namespace UEd
         public void Clear()
         {
             _rows.Clear();
+            CursorX = 0;
+            CursorY = 0;
+            _rows.Add("");
+        }
+
+        public void SetData(string text)
+        {
+            if (text == null)
+            {
+                Clear();
+                return;
+            }
+            var rows = Regex.Split(text, @"\n");
+            _rows.Clear();
+            _rows.AddRange(rows);
             CursorX = 0;
             CursorY = 0;
         }
