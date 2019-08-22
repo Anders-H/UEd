@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using UEd.Recent;
 
 namespace UEd
 {
@@ -13,8 +13,8 @@ namespace UEd
         private readonly CharacterArea _area = new CharacterArea();
         private readonly CharacterView _view = new CharacterView();
         private readonly InputHandler _inputHandler = new InputHandler();
-        private readonly List<ToolStripMenuItem> _recentMenuItems = new List<ToolStripMenuItem>();
         private readonly RecentFileManager _recentFileManager = new RecentFileManager();
+        private RecentFileList _recentFiles = new RecentFileList();
         private bool _recalcFontSize = true;
         private int ViewportWidth => ClientRectangle.Width;
         private int ViewportHeight => ClientRectangle.Height - menuStrip1.Height;
@@ -197,6 +197,7 @@ namespace UEd
 
         private void OpenDocumentToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //TODO: Save.
             const string title = "Open document";
             using (var x = new OpenFileDialog())
             {
@@ -204,36 +205,43 @@ namespace UEd
                 x.Filter = @"All files (*.*)|*.*";
                 if (x.ShowDialog() != DialogResult.OK)
                     return;
-                var fi = new FileInfo(x.FileName);
-                if (fi.Length > 104857600)
-                {
-                    MessageBox.Show(@"The file is too large. Maximum size is 100 Mb.", title, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                Cursor = Cursors.WaitCursor;
-                string fileContent;
-                try
-                {
-                    using (var sr = new StreamReader(fi.FullName, Encoding.UTF8))
-                    {
-                        fileContent = sr.ReadToEnd();
-                        sr.Close();
-                    }
-                }
-                catch
-                {
-                    Cursor = Cursors.Default;
-                    MessageBox.Show(@"The file is too large. Maximum size is 100 Mb.", title, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                _area.SetData(fileContent);
-                _view.OffsetX = 0;
-                _view.OffsetY = 0;
-                Filename = fi.FullName;
-                Changed = false;
-                Invalidate();
-                Cursor = Cursors.Default;
+                OpenDocument(x.FileName, x.Title);
             }
+        }
+
+        private void OpenDocument(string filename, string title)
+        {
+            var fi = new FileInfo(filename);
+            if (fi.Length > 104857600)
+            {
+                MessageBox.Show(@"The file is too large. Maximum size is 100 Mb.", title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            Cursor = Cursors.WaitCursor;
+            string fileContent;
+            try
+            {
+                using (var sr = new StreamReader(fi.FullName, Encoding.UTF8))
+                {
+                    fileContent = sr.ReadToEnd();
+                    sr.Close();
+                }
+            }
+            catch
+            {
+                Cursor = Cursors.Default;
+                MessageBox.Show(@"The file is too large. Maximum size is 100 Mb.", title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            _area.SetData(fileContent);
+            _view.OffsetX = 0;
+            _view.OffsetY = 0;
+            Filename = fi.FullName;
+            Changed = false;
+            Invalidate();
+            _recentFiles.Add(fi.FullName);
+            ReconstructRecentDocumentList();
+            Cursor = Cursors.Default;
         }
 
         private void QuitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -244,12 +252,49 @@ namespace UEd
 
         private void MainWindow_Shown(object sender, EventArgs e)
         {
-            var recentItems = _recentFileManager.Load();
+            _recentFiles = _recentFileManager.Load();
+            ReconstructRecentDocumentList();
         }
 
-        private void MainWindow_FormClosed(object sender, FormClosedEventArgs e)
-        {
+        private void MainWindow_FormClosed(object sender, FormClosedEventArgs e) =>
+            _recentFileManager.Save(_recentFiles);
 
+        private void ReconstructRecentDocumentList()
+        {
+            openRecentToolStripMenuItem.DropDownItems.Clear();
+            if (_recentFiles.Count <= 0)
+            {
+                openRecentToolStripMenuItem.DropDownItems.Add(new ToolStripMenuItem
+                {
+                    Text = @"No recent files",
+                    Enabled = false
+                });
+                return;
+            }
+            foreach (var r in _recentFiles)
+            {
+                var recentMenu = new ToolStripMenuItem
+                {
+                    Tag = r,
+                    Text = r.DisplayFilename
+                };
+                recentMenu.Click += ClickOpenRecent;
+                openRecentToolStripMenuItem.DropDownItems.Add(recentMenu);
+            }
+        }
+
+        private void ClickOpenRecent(object sender, EventArgs e)
+        {
+            //TODO: Save.
+            var m = (ToolStripMenuItem)sender;
+            var f = (RecentFile)m.Tag;
+            if (f.Exists)
+            {
+                OpenDocument(f.Filename, "Open recent");
+                return;
+            }
+            _recentFiles.Remove(f);
+            ReconstructRecentDocumentList();
         }
     }
 }

@@ -34,14 +34,13 @@
             this.newDocumentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.openDocumentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openRecentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.restoreZoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openRecentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.noRecentDocumentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -90,6 +89,24 @@
             this.openDocumentToolStripMenuItem.Text = "&Open document...";
             this.openDocumentToolStripMenuItem.Click += new System.EventHandler(this.OpenDocumentToolStripMenuItem_Click);
             // 
+            // openRecentToolStripMenuItem
+            // 
+            this.openRecentToolStripMenuItem.Name = "openRecentToolStripMenuItem";
+            this.openRecentToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.openRecentToolStripMenuItem.Text = "Open recent";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(199, 6);
+            // 
+            // quitToolStripMenuItem
+            // 
+            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.quitToolStripMenuItem.Text = "Quit";
+            this.quitToolStripMenuItem.Click += new System.EventHandler(this.QuitToolStripMenuItem_Click);
+            // 
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -127,33 +144,6 @@
             this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.zoomOutToolStripMenuItem.Text = "Zoom out (Ctrl -)";
             this.zoomOutToolStripMenuItem.Click += new System.EventHandler(this.zoomOutToolStripMenuItem_Click);
-            // 
-            // openRecentToolStripMenuItem
-            // 
-            this.openRecentToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.noRecentDocumentsToolStripMenuItem});
-            this.openRecentToolStripMenuItem.Name = "openRecentToolStripMenuItem";
-            this.openRecentToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
-            this.openRecentToolStripMenuItem.Text = "Open recent";
-            // 
-            // noRecentDocumentsToolStripMenuItem
-            // 
-            this.noRecentDocumentsToolStripMenuItem.Enabled = false;
-            this.noRecentDocumentsToolStripMenuItem.Name = "noRecentDocumentsToolStripMenuItem";
-            this.noRecentDocumentsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.noRecentDocumentsToolStripMenuItem.Text = "No recent documents";
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(199, 6);
-            // 
-            // quitToolStripMenuItem
-            // 
-            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
-            this.quitToolStripMenuItem.Text = "Quit";
-            this.quitToolStripMenuItem.Click += new System.EventHandler(this.QuitToolStripMenuItem_Click);
             // 
             // MainWindow
             // 
@@ -193,7 +183,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem openDocumentToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openRecentToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem noRecentDocumentsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
     }
