@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace UEd
+namespace UEd.Editor.Zoom
 {
     public class ZoomLevelList : List<ZoomLevel>
     {

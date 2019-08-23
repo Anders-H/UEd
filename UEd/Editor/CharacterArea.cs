@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Text.RegularExpressions;
 
-namespace UEd
+namespace UEd.Editor
 {
     public class CharacterArea
     {
@@ -35,6 +36,19 @@ namespace UEd
             _rows.AddRange(rows);
             CursorX = 0;
             CursorY = 0;
+        }
+
+        public string GetData()
+        {
+            var result = new StringBuilder();
+            for (var i = 0; i < _rows.Count; i++)
+            {
+                if (i < _rows.Count - 1)
+                    result.AppendLine(_rows[i].TrimEnd());
+                else
+                    result.Append(_rows[i].TrimEnd());
+            }
+            return result.ToString();
         }
 
         public string CurrentRow =>

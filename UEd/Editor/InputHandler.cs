@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace UEd
+namespace UEd.Editor
 {
     public class InputHandler
     {
@@ -41,6 +41,13 @@ namespace UEd
             {
                 case 8:
                     area.TypeBackspace(view);
+                    return true;
+                case 9:
+                    for (var t = 0; t < 3; t++)
+                    {
+                        area.TypeCharacter(' ', view);
+                        area.MoveLeft(view);
+                    }
                     return true;
                 case 10:
                     return false;
