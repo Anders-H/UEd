@@ -43,12 +43,7 @@ namespace UEd.Editor
                     area.TypeBackspace(view);
                     return true;
                 case 9:
-                    for (var t = 0; t < 3; t++)
-                    {
-                        area.TypeCharacter(' ', view);
-                        area.MoveLeft(view);
-                    }
-                    return true;
+                    break;
                 case 10:
                     return false;
                 case 13:
@@ -59,6 +54,48 @@ namespace UEd.Editor
                 return false;
             area.MoveLeft(view);
             return true;
+        }
+
+        public void Indent(CharacterArea area, CharacterView view)
+        {
+            for (var t = 0; t < 3; t++)
+            {
+                area.TypeCharacter(' ', view);
+                area.MoveLeft(view);
+            }
+        }
+
+        public void Outdent(CharacterArea area, CharacterView view)
+        {
+            if (area.CurrentRow.Length <= 0)
+                return;
+            for (var t = 0; t < 3; t++)
+            {
+                if (area.CursorX == 0 && area.GetCharacterAt(area.CursorX, area.CursorX)[0] == 9)
+                {
+                    //area.Delete();
+                    return;
+                }
+                if (area.CursorX == 0 && area.GetCharacterAt(area.CursorX, area.CursorX) == " ")
+                {
+                    //area.Delete();
+                    continue;
+                }
+                if (area.CursorX > 0 && area.CurrentRow.Length >= area.CursorX && area.GetCharacterAt(area.CursorX, area.CursorX)[0] == 9)
+                {
+                    area.TypeBackspace(view);
+                    return;
+                }
+                if (area.CursorX > 0 && area.CurrentRow.Length >= area.CursorX && area.GetCharacterAt(area.CursorX, area.CursorX) == " ")
+                {
+                    area.TypeBackspace(view);
+                    continue;
+                }
+                if (area.CursorX > 0)
+                {
+                    area.TypeBackspace(view);
+                }
+            }
         }
     }
 }

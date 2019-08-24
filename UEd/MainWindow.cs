@@ -122,6 +122,23 @@ namespace UEd
             Invalidate();
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            switch (keyData)
+            {
+                case Keys.Tab | Keys.Shift:
+                    _inputHandler.Indent(_area, _view);
+                    Changed = true;
+                    return true;
+                case Keys.Tab:
+                    _inputHandler.Outdent(_area, _view);
+                    Changed = true;
+                    return true;
+                default:
+                    return base.ProcessCmdKey(ref msg, keyData);
+            }
+        }
+
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (_inputHandler.KeyPress(e.KeyChar, _area, _view))

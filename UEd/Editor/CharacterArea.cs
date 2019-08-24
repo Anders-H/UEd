@@ -121,6 +121,14 @@ namespace UEd.Editor
             return row.Length > x ? row.Substring(x, 1) : null;
         }
 
+        public string GetCharacterOrWhitespaceAt(int x, int y)
+        {
+            if (y < 0 || y >= _rows.Count)
+                return null;
+            var row = _rows[y];
+            return row.Length > x ? row.Substring(x, 1) : null;
+        }
+
         public void MoveToHome(CharacterView view)
         {
             if (CurrentRowLength == 0)

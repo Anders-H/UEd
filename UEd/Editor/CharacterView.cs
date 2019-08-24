@@ -47,8 +47,7 @@ namespace UEd.Editor
                             var s = area.GetCharacterAt(x + OffsetX, y + OffsetY);
                             if (x + OffsetX == area.CursorX && y + OffsetY == area.CursorY)
                             {
-                                g.FillRectangle(foreground, physicalX, physicalY - 2, physicalWidth,
-                                    physicalHeight + 2);
+                                g.FillRectangle(foreground, physicalX, physicalY - 2, physicalWidth, physicalHeight + 2);
                                 if (!string.IsNullOrWhiteSpace(s))
                                     g.DrawString(s, Font, background, physicalX + charOffsetX, physicalY + charOffsetY);
                             }
@@ -56,7 +55,16 @@ namespace UEd.Editor
                             {
                                 g.DrawString(s, Font, foreground, physicalX + charOffsetX, physicalY + charOffsetY);
                             }
-
+#if DEBUG
+                            var whitespace = area.GetCharacterOrWhitespaceAt(x + OffsetX, y + OffsetY);
+                            if (whitespace != null)
+                            {
+                                if (whitespace == " ")
+                                    g.FillRectangle(Brushes.Yellow, (physicalX + (int)(charWidth / 2)) - 1, (physicalY + (int)(charHeight / 2)) - 1, 2, 2);
+                                else if (whitespace[0] == 9)
+                                    g.FillRectangle(Brushes.Pink, (physicalX + (int)(charWidth / 2)) - 1, (physicalY + (int)(charHeight / 2)) - 1, 2, 2);
+                            }
+#endif
                             xpos += charWidth;
                         }
 
