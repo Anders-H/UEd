@@ -64,6 +64,7 @@ namespace UEd
             _view.Draw(
                 _area,
                 e.Graphics,
+                Font,
                 0,
                 menuStrip1.Height,
                 ViewportWidth,
@@ -127,12 +128,14 @@ namespace UEd
             switch (keyData)
             {
                 case Keys.Tab | Keys.Shift:
-                    _inputHandler.Indent(_area, _view);
-                    Changed = true;
-                    return true;
-                case Keys.Tab:
                     _inputHandler.Outdent(_area, _view);
                     Changed = true;
+                    Invalidate();
+                    return true;
+                case Keys.Tab:
+                    _inputHandler.Indent(_area, _view);
+                    Changed = true;
+                    Invalidate();
                     return true;
                 default:
                     return base.ProcessCmdKey(ref msg, keyData);
@@ -477,5 +480,10 @@ namespace UEd
 
         private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e) =>
             SaveDocumentAs();
+
+        private void OptionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

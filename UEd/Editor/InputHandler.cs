@@ -8,6 +8,9 @@ namespace UEd.Editor
         {
             switch (keyCode)
             {
+                case Keys.Delete:
+                    area.TypeDelete(view);
+                    break;
                 case Keys.Down:
                     area.MoveDown(view);
                     break;
@@ -73,12 +76,12 @@ namespace UEd.Editor
             {
                 if (area.CursorX == 0 && area.GetCharacterAt(area.CursorX, area.CursorX)[0] == 9)
                 {
-                    //area.Delete();
+                    area.TypeDelete(view);
                     return;
                 }
                 if (area.CursorX == 0 && area.GetCharacterAt(area.CursorX, area.CursorX) == " ")
                 {
-                    //area.Delete();
+                    area.TypeDelete(view);
                     continue;
                 }
                 if (area.CursorX > 0 && area.CurrentRow.Length >= area.CursorX && area.GetCharacterAt(area.CursorX, area.CursorX)[0] == 9)

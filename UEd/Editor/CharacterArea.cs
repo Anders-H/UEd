@@ -24,6 +24,9 @@ namespace UEd.Editor
             _rows.Add("");
         }
 
+        public int RowCount =>
+            _rows.Count;
+
         public void SetData(string text)
         {
             if (text == null)
@@ -161,6 +164,52 @@ namespace UEd.Editor
         }
 
         public void TypeBackspace(CharacterView view)
+        {
+            var len = _rows[CursorY].Length;
+            var viewOffsetX = 0;
+            var viewOffsetY = 0;
+            if (CursorX == 0 && CursorY > 0)
+            {
+                var prevRowLength = _rows[CursorY - 1].Length;
+                _rows[CursorY - 1] += _rows[CursorY];
+                _rows.RemoveAt(CursorY);
+                CursorX = prevRowLength;
+                CursorY--;
+                if (CursorY > 0)
+                    viewOffsetY--;
+            }
+            else if (CursorX > 0 && CursorX > len)
+            {
+                MoveLeft(view);
+                if (CursorX > 0)
+                    viewOffsetX--;
+            }
+            else if (CursorX == 1)
+            {
+                _rows[CursorY] = _rows[CursorY].Substring(1);
+                CursorX = 0;
+            }
+            else if (len > 0 && CursorX == len)
+            {
+                _rows[CursorY] = _rows[CursorY].Substring(0, len - 1);
+                CursorX--;
+                viewOffsetX--;
+            }
+            else if (CursorX > 0)
+            {
+                var left = _rows[CursorY].Substring(0, CursorX - 1);
+                var right = _rows[CursorY].Substring(CursorX);
+                _rows[CursorY] = left + right;
+                CursorX--;
+                viewOffsetX--;
+            }
+            if (Options.ScrollAhead)
+                view.EnsurePositionIsVisible(CursorX + viewOffsetX, CursorY + viewOffsetY);
+            else
+                view.EnsurePositionIsVisible(CursorX, CursorY);
+        }
+
+        public void TypeDelete(CharacterView view)
         {
 
         }
