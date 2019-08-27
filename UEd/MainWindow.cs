@@ -73,12 +73,13 @@ namespace UEd
 
         private void RecalcFontSize(Graphics g)
         {
+            const double scale = 1.5;
             var size = 3f;
             var charWidth = ViewportWidth / (double) CharacterView.ZoomLevels.GetCurrentZoom().Columns;
             var charHeight = ViewportHeight / (double) CharacterView.ZoomLevels.GetCurrentZoom().Rows;
             if (!FontFitsInSquare(g, size, charWidth, charHeight))
             {
-                SetFontSize(size);
+                SetFontSize(size * scale);
                 return;
             }
 
@@ -88,14 +89,14 @@ namespace UEd
                 size += 0.1f;
                 if (!FontFitsInSquare(g, size, charWidth, charHeight))
                 {
-                    SetFontSize(size + 1f);
+                    SetFontSize(size * scale);
                     return;
                 }
 
                 retryCount++;
             } while (retryCount < 200);
 
-            SetFontSize(size);
+            SetFontSize(size * scale);
         }
 
         private static bool FontFitsInSquare(Graphics g, double size, double width, double height)
@@ -106,7 +107,6 @@ namespace UEd
                 if (z.Width > width || z.Height > height)
                     return false;
             }
-
             return true;
         }
 
@@ -305,7 +305,6 @@ namespace UEd
                     sw.Flush();
                     sw.Close();
                 }
-
                 Changed = false;
                 Cursor = Cursors.Default;
                 return true;
@@ -339,7 +338,6 @@ namespace UEd
                         sw.Flush();
                         sw.Close();
                     }
-
                     Changed = false;
                     Filename = x.FileName;
                     _recentFiles.Add(x.FileName);
@@ -448,19 +446,16 @@ namespace UEd
 
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (Changed)
-            {
-                if (PromptSave("Quit") == DialogResult.Cancel)
-                    e.Cancel = true;
-            }
+            if (!Changed)
+                return;
+            if (PromptSave("Quit") == DialogResult.Cancel)
+                e.Cancel = true;
         }
 
-        private void MainWindow_DragEnter(object sender, DragEventArgs e)
-        {
+        private void MainWindow_DragEnter(object sender, DragEventArgs e) =>
             e.Effect = e.Data.GetDataPresent(DataFormats.FileDrop, false)
                 ? DragDropEffects.Copy
                 : DragDropEffects.None;
-        }
 
         private void MainWindow_DragDrop(object sender, DragEventArgs e)
         {
@@ -480,10 +475,5 @@ namespace UEd
 
         private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e) =>
             SaveDocumentAs();
-
-        private void OptionsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

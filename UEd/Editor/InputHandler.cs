@@ -70,26 +70,26 @@ namespace UEd.Editor
 
         public void Outdent(CharacterArea area, CharacterView view)
         {
-            if (area.CurrentRow.Length <= 0)
+            if (area.CurrentRowLength <= 0)
                 return;
             for (var t = 0; t < 3; t++)
             {
-                if (area.CursorX == 0 && area.GetCharacterAt(area.CursorX, area.CursorX)[0] == 9)
+                if (area.CursorX == 0 && area.GetCharacterOrWhitespace()[0] == 9)
                 {
                     area.TypeDelete(view);
                     return;
                 }
-                if (area.CursorX == 0 && area.GetCharacterAt(area.CursorX, area.CursorX) == " ")
+                if (area.CursorX == 0 && area.GetCharacterOrWhitespace() == " ")
                 {
                     area.TypeDelete(view);
                     continue;
                 }
-                if (area.CursorX > 0 && area.CurrentRow.Length >= area.CursorX && area.GetCharacterAt(area.CursorX, area.CursorX)[0] == 9)
+                if (area.CursorX > 0 && area.CurrentRowLength >= area.CursorX && area.GetCharacterOrWhitespace()[0] == 9)
                 {
                     area.TypeBackspace(view);
                     return;
                 }
-                if (area.CursorX > 0 && area.CurrentRow.Length >= area.CursorX && area.GetCharacterAt(area.CursorX, area.CursorX) == " ")
+                if (area.CursorX > 0 && area.CurrentRowLength >= area.CursorX && area.GetCharacterOrWhitespace() == " ")
                 {
                     area.TypeBackspace(view);
                     continue;

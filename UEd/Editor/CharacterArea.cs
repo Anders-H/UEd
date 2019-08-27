@@ -114,6 +114,9 @@ namespace UEd.Editor
             JumpInHorizontalView(view);
         }
 
+        public string GetCharacter() =>
+            GetCharacterAt(CursorX, CursorY);
+
         public string GetCharacterAt(int x, int y)
         {
             if (y < 0 || y >= _rows.Count)
@@ -123,6 +126,9 @@ namespace UEd.Editor
                 return null;
             return row.Length > x ? row.Substring(x, 1) : null;
         }
+
+        public string GetCharacterOrWhitespace() =>
+            GetCharacterOrWhitespaceAt(CursorX, CursorY);
 
         public string GetCharacterOrWhitespaceAt(int x, int y)
         {
@@ -165,7 +171,7 @@ namespace UEd.Editor
 
         public void TypeBackspace(CharacterView view)
         {
-            var len = _rows[CursorY].Length;
+            var len = CurrentRowLength;
             var viewOffsetX = 0;
             var viewOffsetY = 0;
             if (CursorX == 0 && CursorY > 0)
@@ -211,7 +217,38 @@ namespace UEd.Editor
 
         public void TypeDelete(CharacterView view)
         {
-
+            var len = CurrentRowLength;
+            if (len == 0 && CursorX == 0)
+            {
+                _rows.RemoveAt(CursorY);
+                if (_rows.Count <= 0)
+                    _rows.Add("");
+                if (CursorY >= _rows.Count)
+                    CursorY = _rows.Count - 1;
+            }
+            else if (len > 0 && CursorX == 0)
+            {
+                _rows[CursorY] = _rows[CursorY].Substring(1);
+            }
+            else if (len > 0 && CursorX >= len)
+            {
+                if (CursorY < _rows.Count - 1)
+                {
+                    _rows[CursorY] += _rows[CursorY + 1];
+                    _rows.RemoveAt(CursorY + 1);
+                }
+                CursorX = len;
+            }
+            else if (len > 0 && CursorX == len - 1)
+            {
+                _rows[CursorY] = _rows[CursorY].Substring(0, len - 1);
+            }
+            else if (len > 0 && CursorX < len - 1)
+            {
+                var left = _rows[CursorY].Substring(0, CursorX);
+                var right = _rows[CursorY].Substring(CursorX + 1);
+                _rows[CursorY] = left + right;
+            }
         }
 
         public void PageUp(CharacterView view)
