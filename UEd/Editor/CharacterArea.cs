@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms.VisualStyles;
 
 namespace UEd.Editor
 {
@@ -82,7 +83,7 @@ namespace UEd.Editor
                 MoveRight(view);
         }
 
-        public void MoveLeft(CharacterView view)
+        public void MoveLeft(CharacterView view, bool batch)
         {
             if (CursorX < CurrentRowLength)
             {
@@ -95,7 +96,8 @@ namespace UEd.Editor
                 return;
             MoveDown(view);
             CursorX = 0;
-            JumpInHorizontalView(view);
+            if (!batch)
+                JumpInHorizontalView(view);
         }
 
         public void MoveRight(CharacterView view)
@@ -186,7 +188,7 @@ namespace UEd.Editor
             }
             else if (CursorX > 0 && CursorX > len)
             {
-                MoveLeft(view);
+                MoveLeft(view, false);
                 if (CursorX > 0)
                     viewOffsetX--;
             }
@@ -251,6 +253,36 @@ namespace UEd.Editor
             }
         }
 
+        public void DeleteAt(int x, int y)
+        {
+            var len = CurrentRowLength;
+            if (len == 0 && x == 0)
+            {
+                _rows.RemoveAt(y);
+                if (_rows.Count <= 0)
+                    _rows.Add("");
+            }
+            else if (len > 0 && x == 0)
+            {
+                _rows[y] = _rows[y].Substring(1);
+            }
+            else if (len > 0 && x >= len && y < _rows.Count - 1)
+            {
+                _rows[y] += _rows[y + 1];
+                _rows.RemoveAt(y + 1);
+            }
+            else if (len > 0 && x == len - 1)
+            {
+                _rows[y] = _rows[y].Substring(0, len - 1);
+            }
+            else if (len > 0 && x < len - 1)
+            {
+                var left = _rows[y].Substring(0, x);
+                var right = _rows[y].Substring(x + 1);
+                _rows[y] = left + right;
+            }
+        }
+
         public void PageUp(CharacterView view)
         {
             if (CursorY <= 0)
@@ -277,13 +309,14 @@ namespace UEd.Editor
                 CursorY = _rows.Count - 1;
         }
 
-        public bool TypeCharacter(char c, CharacterView view)
+        public bool TypeCharacter(char c, CharacterView view, bool batch)
         {
             var r = _rows[CursorY];
             if (string.IsNullOrEmpty(r))
             {
                 _rows[CursorY] = new string(c, 1);
-                JumpInHorizontalView(view);
+                if (!batch)
+                    JumpInHorizontalView(view);
                 return true;
             }
             if (CursorX < r.Length)
@@ -294,7 +327,8 @@ namespace UEd.Editor
             if (CursorX > r.Length)
             {
                 CursorX = r.Length;
-                JumpInHorizontalView(view);
+                if (!batch)
+                    JumpInHorizontalView(view);
             }
             try
             {
@@ -314,6 +348,8 @@ namespace UEd.Editor
                 _rows.Insert(CursorY, "");
                 MoveDown(view);
                 JumpInHorizontalView(view);
+                if (Options.AutoIndent)
+                    AutoIndent(view);
                 return;
             }
             if (CursorX == CurrentRowLength)
@@ -323,6 +359,8 @@ namespace UEd.Editor
                 else
                     _rows.Insert(CursorY + 1, "");
                 MoveDown(view);
+                if (Options.AutoIndent)
+                    AutoIndent(view);
                 return;
             }
             var leftPart = _rows[CursorY].Substring(0, CursorX);
@@ -334,13 +372,33 @@ namespace UEd.Editor
                 _rows.Insert(CursorY + 1, rightPart);
             MoveDown(view);
             MoveToHome(view);
+            if (Options.AutoIndent)
+                AutoIndent(view);
+        }
+
+        private void AutoIndent(CharacterView view)
+        {
+            if (CursorY <= 0 || CursorX > 0)
+                return;
+            for (var i = 0; i < GetIndentDepth(CursorY - 1); i++)
+            {
+                TypeCharacter(' ', view, true);
+                MoveLeft(view, true);
+            }
+            JumpInHorizontalView(view);
         }
 
         private void JumpInHorizontalView(CharacterView view)
         {
-            while (CursorX < view.OffsetX)
+            var targetX = CursorX;
+            if (CursorX > 0 && Options.ScrollAhead)
+                targetX--;
+            while (targetX < view.OffsetX)
                 view.OffsetX--;
-            while (CursorX > view.OffsetX + CharacterView.ZoomLevels.GetCurrentZoom().Columns - 1)
+            targetX = CursorX;
+            if (Options.ScrollAhead)
+                targetX++;
+            while (targetX > view.OffsetX + CharacterView.ZoomLevels.GetCurrentZoom().Columns - 1)
                 view.OffsetX++;
         }
 

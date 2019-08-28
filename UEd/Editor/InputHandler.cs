@@ -21,7 +21,7 @@ namespace UEd.Editor
                     area.MoveRight(view);
                     break;
                 case Keys.Right:
-                    area.MoveLeft(view);
+                    area.MoveLeft(view, false);
                     break;
                 case Keys.Home:
                     area.MoveToHome(view);
@@ -53,9 +53,9 @@ namespace UEd.Editor
                     area.TypeEnter(view);
                     return true;
             }
-            if (!area.TypeCharacter(c, view))
+            if (!area.TypeCharacter(c, view, false))
                 return false;
-            area.MoveLeft(view);
+            area.MoveLeft(view, false);
             return true;
         }
 
@@ -63,8 +63,8 @@ namespace UEd.Editor
         {
             for (var t = 0; t < 3; t++)
             {
-                area.TypeCharacter(' ', view);
-                area.MoveLeft(view);
+                area.TypeCharacter(' ', view, true);
+                area.MoveLeft(view, t == 2);
             }
         }
 
@@ -74,31 +74,14 @@ namespace UEd.Editor
                 return;
             for (var t = 0; t < 3; t++)
             {
-                if (area.CursorX == 0 && area.GetCharacterOrWhitespace()[0] == 9)
+                if (area.CurrentRow[0] == ' ')
                 {
-                    area.TypeDelete(view);
-                    return;
-                }
-                if (area.CursorX == 0 && area.GetCharacterOrWhitespace() == " ")
-                {
-                    area.TypeDelete(view);
-                    continue;
-                }
-                if (area.CursorX > 0 && area.CurrentRowLength >= area.CursorX && area.GetCharacterOrWhitespace()[0] == 9)
-                {
-                    area.TypeBackspace(view);
-                    return;
-                }
-                if (area.CursorX > 0 && area.CurrentRowLength >= area.CursorX && area.GetCharacterOrWhitespace() == " ")
-                {
-                    area.TypeBackspace(view);
-                    continue;
-                }
-                if (area.CursorX > 0)
-                {
-                    area.TypeBackspace(view);
+                    area.DeleteAt(0, area.CursorY);
+                    if (area.CursorX > 0)
+                        area.CursorX--;
                 }
             }
+            view.EnsurePositionIsVisible(area.CursorX, area.CursorX);
         }
     }
 }

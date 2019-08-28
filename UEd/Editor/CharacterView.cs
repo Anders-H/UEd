@@ -12,6 +12,7 @@ namespace UEd.Editor
 
         public void EnsurePositionIsVisible(int x, int y)
         {
+            //TODO: Visibility bugg here
             while (x < OffsetX)
                 OffsetX--;
             while (x > OffsetX + ZoomLevels.GetCurrentZoom().Columns - 1)

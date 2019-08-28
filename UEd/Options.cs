@@ -2,9 +2,20 @@
 {
     public class Options
     {
+        private static bool? _autoIndent;
         private static bool? _scrollAhead;
         private static bool? _showCurrentLineNumber;
         private static bool? _showTotalLines;
+
+        public static bool AutoIndent
+        {
+            get
+            {
+                if (_autoIndent == null)
+                    _autoIndent = GetBool(nameof(AutoIndent), true);
+                return _autoIndent.Value;
+            }
+        }
 
         public static bool ScrollAhead
         {
