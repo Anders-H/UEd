@@ -1,8 +1,13 @@
-﻿namespace UEd
+﻿using System.Drawing;
+
+namespace UEd
 {
     public class Options
     {
         private static bool? _autoIndent;
+        private static Color? _backgroundColor;
+        private static Color? _cursorColor;
+        private static Color? _selectionColor;
         private static bool? _scrollAhead;
         private static bool? _showCurrentLineNumber;
         private static bool? _showTotalLines;
@@ -14,6 +19,36 @@
                 if (_autoIndent == null)
                     _autoIndent = GetBool(nameof(AutoIndent), true);
                 return _autoIndent.Value;
+            }
+        }
+
+        public static Color BackgroundColor
+        {
+            get
+            {
+                if (_backgroundColor == null)
+                    _backgroundColor = GetColor(nameof(BackgroundColor), Color.FromArgb(0, 0, 0));
+                return _backgroundColor.Value;
+            }
+        }
+
+        public static Color CursorColor
+        {
+            get
+            {
+                if (_cursorColor == null)
+                    _cursorColor = GetColor(nameof(CursorColor), Color.FromArgb(0, 255, 0));
+                return _cursorColor.Value;
+            }
+        }
+
+        public static Color SelectionColor
+        {
+            get
+            {
+                if (_selectionColor == null)
+                    _selectionColor = GetColor(nameof(SelectionColor), Color.FromArgb(0, 128, 0));
+                return _selectionColor.Value;
             }
         }
 
@@ -62,6 +97,21 @@
                     return true;
                 default:
                     return defaultValue;
+            }
+        }
+
+        private static Color GetColor(string name, Color defaultValue)
+        {
+            var result = System.Configuration.ConfigurationManager.AppSettings.Get(name);
+            if (string.IsNullOrWhiteSpace(result))
+                return defaultValue;
+            try
+            {
+                return ColorTranslator.FromHtml(result);
+            }
+            catch
+            {
+                return defaultValue;
             }
         }
     }

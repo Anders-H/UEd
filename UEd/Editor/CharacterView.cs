@@ -29,9 +29,9 @@ namespace UEd.Editor
             var ypos = (double)viewportY;
             var charWidth = viewportWidth/(double)ZoomLevels.GetCurrentZoom().Columns;
             var charHeight = viewportHeight/(double)ZoomLevels.GetCurrentZoom().Rows;
-            using (var background = new SolidBrush(Color.Black))
+            using (var background = new SolidBrush(Options.BackgroundColor))
             {
-                using (var foreground = new SolidBrush(Color.FromArgb(0, 255, 0)))
+                using (var foreground = new SolidBrush(Options.CursorColor))
                 {
                     g.Clear(Color.Black);
                     var z = g.MeasureString("l", Font);
