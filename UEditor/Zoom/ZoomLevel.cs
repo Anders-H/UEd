@@ -1,4 +1,4 @@
-﻿namespace UEd.Editor.Zoom
+﻿namespace UEditor.Zoom
 {
     public class ZoomLevel
     {

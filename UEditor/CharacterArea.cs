@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows.Forms.VisualStyles;
 
-namespace UEd.Editor
+namespace UEditor
 {
     public class CharacterArea
     {
+        private readonly IOptions _options;
         private readonly List<string> _rows = new List<string>();
         public int CursorX { get; set; }
         public int CursorY { get; set; }
         
-        public CharacterArea()
+        public CharacterArea(IOptions options)
         {
+            _options = options;
             Clear();
         }
 
@@ -211,7 +212,7 @@ namespace UEd.Editor
                 CursorX--;
                 viewOffsetX--;
             }
-            if (Options.ScrollAhead)
+            if (_options.ScrollAhead)
                 view.EnsurePositionIsVisible(CursorX + viewOffsetX, CursorY + viewOffsetY);
             else
                 view.EnsurePositionIsVisible(CursorX, CursorY);
@@ -348,7 +349,7 @@ namespace UEd.Editor
                 _rows.Insert(CursorY, "");
                 MoveDown(view);
                 JumpInHorizontalView(view);
-                if (Options.AutoIndent)
+                if (_options.AutoIndent)
                     AutoIndent(view);
                 return;
             }
@@ -359,7 +360,7 @@ namespace UEd.Editor
                 else
                     _rows.Insert(CursorY + 1, "");
                 MoveDown(view);
-                if (Options.AutoIndent)
+                if (_options.AutoIndent)
                     AutoIndent(view);
                 return;
             }
@@ -372,7 +373,7 @@ namespace UEd.Editor
                 _rows.Insert(CursorY + 1, rightPart);
             MoveDown(view);
             MoveToHome(view);
-            if (Options.AutoIndent)
+            if (_options.AutoIndent)
                 AutoIndent(view);
         }
 
@@ -391,12 +392,12 @@ namespace UEd.Editor
         private void JumpInHorizontalView(CharacterView view)
         {
             var targetX = CursorX;
-            if (CursorX > 0 && Options.ScrollAhead)
+            if (CursorX > 0 && _options.ScrollAhead)
                 targetX--;
             while (targetX < view.OffsetX)
                 view.OffsetX--;
             targetX = CursorX;
-            if (Options.ScrollAhead)
+            if (_options.ScrollAhead)
                 targetX++;
             while (targetX > view.OffsetX + CharacterView.ZoomLevels.GetCurrentZoom().Columns - 1)
                 view.OffsetX++;

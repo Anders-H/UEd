@@ -1,18 +1,19 @@
 ﻿using System.Drawing;
+using UEditor;
 
 namespace UEd
 {
-    public class Options
+    public class Options : IOptions
     {
-        private static bool? _autoIndent;
-        private static Color? _backgroundColor;
-        private static Color? _cursorColor;
-        private static Color? _selectionColor;
-        private static bool? _scrollAhead;
-        private static bool? _showCurrentLineNumber;
-        private static bool? _showTotalLines;
+        private bool? _autoIndent;
+        private Color? _backgroundColor;
+        private Color? _cursorColor;
+        private Color? _selectionColor;
+        private bool? _scrollAhead;
+        private bool? _showCurrentLineNumber;
+        private bool? _showTotalLines;
 
-        public static bool AutoIndent
+        public bool AutoIndent
         {
             get
             {
@@ -22,7 +23,7 @@ namespace UEd
             }
         }
 
-        public static Color BackgroundColor
+        public Color BackgroundColor
         {
             get
             {
@@ -32,7 +33,7 @@ namespace UEd
             }
         }
 
-        public static Color CursorColor
+        public Color CursorColor
         {
             get
             {
@@ -42,7 +43,7 @@ namespace UEd
             }
         }
 
-        public static Color SelectionColor
+        public Color SelectionColor
         {
             get
             {
@@ -52,7 +53,7 @@ namespace UEd
             }
         }
 
-        public static bool ScrollAhead
+        public bool ScrollAhead
         {
             get
             {
@@ -62,7 +63,7 @@ namespace UEd
             }
         }
 
-        public static bool ShowCurrentLineNumber
+        public bool ShowCurrentLineNumber
         {
             get
             {
@@ -72,7 +73,7 @@ namespace UEd
             }
         }
 
-        public static bool ShowTotalLines
+        public bool ShowTotalLines
         {
             get
             {

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("UEd")]
+[assembly: AssemblyTitle("UEditor")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("WinSoft.se")]
-[assembly: AssemblyProduct("UEd")]
+[assembly: AssemblyProduct("UEditor Library")]
 [assembly: AssemblyCopyright("Copyright © Anders Hesselbom 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("c56add93-8c0d-45e0-9f9f-57ee3b0d5f61")]
+[assembly: Guid("0a443941-2c2d-4f32-94d2-6649826d99dd")]
 
 // Version information for an assembly consists of the following four values:
 //

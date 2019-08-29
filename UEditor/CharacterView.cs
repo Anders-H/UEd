@@ -1,14 +1,21 @@
-﻿using System.Drawing;
-using UEd.Editor.Zoom;
+﻿using System;
+using System.Drawing;
+using UEditor.Zoom;
 
-namespace UEd.Editor
+namespace UEditor
 {
     public class CharacterView
     {
+        private readonly IOptions _options;
         public static ZoomLevelList ZoomLevels { get; } = new ZoomLevelList();
         public int OffsetX { get; set; }
         public int OffsetY { get; set; }
         public Font Font { get; set; }
+
+        public CharacterView(IOptions options)
+        {
+            _options = options;
+        }
 
         public void EnsurePositionIsVisible(int x, int y)
         {
@@ -29,9 +36,9 @@ namespace UEd.Editor
             var ypos = (double)viewportY;
             var charWidth = viewportWidth/(double)ZoomLevels.GetCurrentZoom().Columns;
             var charHeight = viewportHeight/(double)ZoomLevels.GetCurrentZoom().Rows;
-            using (var background = new SolidBrush(Options.BackgroundColor))
+            using (var background = new SolidBrush(_options.BackgroundColor))
             {
-                using (var foreground = new SolidBrush(Options.CursorColor))
+                using (var foreground = new SolidBrush(_options.CursorColor))
                 {
                     g.Clear(Color.Black);
                     var z = g.MeasureString("l", Font);
@@ -74,10 +81,10 @@ namespace UEd.Editor
                     }
                 }
             }
-            if (!Options.ShowCurrentLineNumber && !Options.ShowTotalLines)
+            if (!_options.ShowCurrentLineNumber && !_options.ShowTotalLines)
                 return;
-            var row = Options.ShowCurrentLineNumber && Options.ShowTotalLines ? $"{area.CursorY + 1}/{area.RowCount}"
-                : Options.ShowCurrentLineNumber
+            var row = _options.ShowCurrentLineNumber && _options.ShowTotalLines ? $"{area.CursorY + 1}/{area.RowCount}"
+                : _options.ShowCurrentLineNumber
                 ? $"{area.CursorY + 1}" : $"{area.RowCount}";
             var m = g.MeasureString(row, secondaryFont);
             const int margin = 3;

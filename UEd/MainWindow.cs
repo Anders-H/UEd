@@ -3,15 +3,16 @@ using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using UEd.Editor;
 using UEd.Recent;
+using UEditor;
 
 namespace UEd
 {
     public partial class MainWindow : Form
     {
-        private readonly CharacterArea _area = new CharacterArea();
-        private readonly CharacterView _view = new CharacterView();
+        private static readonly IOptions Options = new Options();
+        private readonly CharacterArea _area = new CharacterArea(Options);
+        private readonly CharacterView _view = new CharacterView(Options);
         private readonly InputHandler _inputHandler = new InputHandler();
         private readonly RecentFileManager _recentFileManager = new RecentFileManager();
         private RecentFileList _recentFiles = new RecentFileList();

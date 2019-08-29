@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace UEd.Editor
+namespace UEditor
 {
     public class InputHandler
     {
