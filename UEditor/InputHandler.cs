@@ -4,6 +4,13 @@ namespace UEditor
 {
     public class InputHandler
     {
+        private readonly IOptions _options;
+
+        public InputHandler(IOptions options)
+        {
+            _options = options;
+        }
+
         public void KeyDown(Keys keyCode, CharacterArea area, CharacterView view)
         {
             switch (keyCode)
@@ -12,13 +19,13 @@ namespace UEditor
                     area.TypeDelete(view);
                     break;
                 case Keys.Down:
-                    area.MoveDown(view);
+                    area.MoveDown(view, false);
                     break;
                 case Keys.Up:
                     area.MoveUp(view);
                     break;
                 case Keys.Left:
-                    area.MoveRight(view);
+                    area.MoveRight(view, false);
                     break;
                 case Keys.Right:
                     area.MoveLeft(view, false);
@@ -81,7 +88,8 @@ namespace UEditor
                         area.CursorX--;
                 }
             }
-            view.EnsurePositionIsVisible(area.CursorX, area.CursorX);
+            var offsetX = _options.ScrollAhead && area.CursorX > 0 ? -1 : 0;
+            view.EnsurePositionIsVisible(area.CursorX + offsetX, area.CursorY);
         }
     }
 }

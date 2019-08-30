@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using UEditor.Selection;
 
 namespace UEditor
 {
@@ -9,6 +10,7 @@ namespace UEditor
     {
         private readonly IOptions _options;
         private readonly List<string> _rows = new List<string>();
+        private readonly SelectionList _selections = new SelectionList();
         public int CursorX { get; set; }
         public int CursorY { get; set; }
         
@@ -28,6 +30,9 @@ namespace UEditor
 
         public int RowCount =>
             _rows.Count;
+
+        public RowSelection GetRowSelection(int y) =>
+            _selections.GetRowSelection(y);
 
         public void SetData(string text)
         {
@@ -64,14 +69,17 @@ namespace UEditor
         public int CurrentRowLength =>
             CurrentRow?.Length ?? 0;
 
-        public void MoveDown(CharacterView view)
+        public void MoveDown(CharacterView view, bool batch)
         {
             if (CursorY < _rows.Count - 1)
                 CursorY++;
-            if (CursorY > view.OffsetY + CharacterView.ZoomLevels.GetCurrentZoom().Rows - 1)
-                view.OffsetY++;
+            if (!batch)
+            {
+                if (CursorY > view.OffsetY + CharacterView.ZoomLevels.GetCurrentZoom().Rows - 1)
+                    view.OffsetY++;
+            }
             while (CursorX > CurrentRowLength)
-                MoveRight(view);
+                CursorX--;
         }
 
         public void MoveUp(CharacterView view)
@@ -81,9 +89,9 @@ namespace UEditor
             if (CursorY < view.OffsetY)
                 view.OffsetY--;
             while (CursorX > CurrentRowLength)
-                MoveRight(view);
+                MoveLeft(view, false);
         }
-
+        
         public void MoveLeft(CharacterView view, bool batch)
         {
             if (CursorX < CurrentRowLength)
@@ -95,13 +103,13 @@ namespace UEditor
             }
             if (CursorY >= _rows.Count - 1)
                 return;
-            MoveDown(view);
+            MoveDown(view, batch);
             CursorX = 0;
             if (!batch)
                 JumpInHorizontalView(view);
         }
 
-        public void MoveRight(CharacterView view)
+        public void MoveRight(CharacterView view, bool batch)
         {
             if (CursorX > 0)
             {
@@ -114,7 +122,8 @@ namespace UEditor
                 return;
             MoveUp(view);
             CursorX = CurrentRowLength;
-            JumpInHorizontalView(view);
+            if (!batch)
+                JumpInHorizontalView(view);
         }
 
         public string GetCharacter() =>
@@ -310,19 +319,19 @@ namespace UEditor
                 CursorY = _rows.Count - 1;
         }
 
-        public bool TypeCharacter(char c, CharacterView view, bool batch)
+        public bool TypeCharacter(char c, CharacterView view, int y, bool batch)
         {
-            var r = _rows[CursorY];
+            var r = _rows[y];
             if (string.IsNullOrEmpty(r))
             {
-                _rows[CursorY] = new string(c, 1);
+                _rows[y] = new string(c, 1);
                 if (!batch)
                     JumpInHorizontalView(view);
                 return true;
             }
             if (CursorX < r.Length)
             {
-                _rows[CursorY] = r.Insert(CursorX, new string(c, 1));
+                _rows[y] = r.Insert(CursorX, new string(c, 1));
                 return true;
             }
             if (CursorX > r.Length)
@@ -333,7 +342,7 @@ namespace UEditor
             }
             try
             {
-                _rows[CursorY] = r.Insert(CursorX, new string(c, 1));
+                _rows[y] = r.Insert(CursorX, new string(c, 1));
                 return true;
             }
             catch
@@ -342,12 +351,15 @@ namespace UEditor
             }
         }
 
+        public bool TypeCharacter(char c, CharacterView view, bool batch) =>
+            TypeCharacter(c, view, CursorY, batch);
+
         public void TypeEnter(CharacterView view)
         {
             if (CursorX == 0)
             {
                 _rows.Insert(CursorY, "");
-                MoveDown(view);
+                MoveDown(view, false);
                 JumpInHorizontalView(view);
                 if (_options.AutoIndent)
                     AutoIndent(view);
@@ -359,9 +371,10 @@ namespace UEditor
                     _rows.Add("");
                 else
                     _rows.Insert(CursorY + 1, "");
-                MoveDown(view);
                 if (_options.AutoIndent)
-                    AutoIndent(view);
+                    AutoIndent(view, CursorY + 1);
+                MoveDown(view, true);
+                MoveLeft(view, false);
                 return;
             }
             var leftPart = _rows[CursorY].Substring(0, CursorX);
@@ -371,23 +384,26 @@ namespace UEditor
                 _rows.Add(rightPart);
             else
                 _rows.Insert(CursorY + 1, rightPart);
-            MoveDown(view);
+            MoveDown(view, true);
             MoveToHome(view);
             if (_options.AutoIndent)
                 AutoIndent(view);
         }
 
-        private void AutoIndent(CharacterView view)
+        private void AutoIndent(CharacterView view, int y)
         {
-            if (CursorY <= 0 || CursorX > 0)
+            if (y <= 0)
                 return;
-            for (var i = 0; i < GetIndentDepth(CursorY - 1); i++)
+            for (var i = 0; i < GetIndentDepth(y - 1); i++)
             {
-                TypeCharacter(' ', view, true);
+                TypeCharacter(' ', view, y, true);
                 MoveLeft(view, true);
             }
             JumpInHorizontalView(view);
         }
+
+        private void AutoIndent(CharacterView view) =>
+            AutoIndent(view, CursorY);
 
         private void JumpInHorizontalView(CharacterView view)
         {

@@ -49,6 +49,9 @@
     <Compile Include="InputHandler.cs" />
     <Compile Include="IOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Selection\RowSelection.cs" />
+    <Compile Include="Selection\SelectionList.cs" />
+    <Compile Include="Selection\SelectionType.cs" />
     <Compile Include="Zoom\ZoomLevel.cs" />
     <Compile Include="Zoom\ZoomLevelList.cs" />
   </ItemGroup>

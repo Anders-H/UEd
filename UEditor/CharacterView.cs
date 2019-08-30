@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using UEditor.Zoom;
 
 namespace UEditor
@@ -19,7 +18,6 @@ namespace UEditor
 
         public void EnsurePositionIsVisible(int x, int y)
         {
-            //TODO: Visibility bugg here
             while (x < OffsetX)
                 OffsetX--;
             while (x > OffsetX + ZoomLevels.GetCurrentZoom().Columns - 1)
@@ -34,50 +32,58 @@ namespace UEditor
         {
             var xpos = (double)viewportX;
             var ypos = (double)viewportY;
-            var charWidth = viewportWidth/(double)ZoomLevels.GetCurrentZoom().Columns;
-            var charHeight = viewportHeight/(double)ZoomLevels.GetCurrentZoom().Rows;
+            var charWidth = viewportWidth / (double)ZoomLevels.GetCurrentZoom().Columns;
+            var charHeight = viewportHeight / (double)ZoomLevels.GetCurrentZoom().Rows;
             using (var background = new SolidBrush(_options.BackgroundColor))
             {
                 using (var foreground = new SolidBrush(_options.CursorColor))
                 {
-                    g.Clear(Color.Black);
-                    var z = g.MeasureString("l", Font);
-                    var charOffsetX = (float)(charWidth / 2 - z.Width / 2);
-                    var charOffsetY = (float)(charHeight / 2 - z.Height / 2);
-                    for (var y = 0; y < ZoomLevels.GetCurrentZoom().Rows; y++)
+                    using (var selection = new SolidBrush(_options.SelectionColor))
                     {
-                        for (var x = 0; x < ZoomLevels.GetCurrentZoom().Columns; x++)
+                        g.Clear(Color.Black);
+                        var z = g.MeasureString("l", Font);
+                        var charOffsetX = (float)(charWidth / 2 - z.Width / 2);
+                        var charOffsetY = (float)(charHeight / 2 - z.Height / 2);
+                        for (var y = 0; y < ZoomLevels.GetCurrentZoom().Rows; y++)
                         {
-                            var physicalX = (float)xpos;
-                            var physicalY = (float)ypos;
-                            var physicalWidth = (float)charWidth;
-                            var physicalHeight = (float)charHeight;
-                            var s = area.GetCharacterAt(x + OffsetX, y + OffsetY);
-                            if (x + OffsetX == area.CursorX && y + OffsetY == area.CursorY)
+                            var rowSelection = area.GetRowSelection(y + OffsetY);
+                            for (var x = 0; x < ZoomLevels.GetCurrentZoom().Columns; x++)
                             {
-                                g.FillRectangle(foreground, physicalX, physicalY, physicalWidth, physicalHeight);
-                                if (!string.IsNullOrWhiteSpace(s))
-                                    g.DrawString(s, Font, background, physicalX + charOffsetX, physicalY + charOffsetY);
-                            }
-                            else
-                            {
-                                g.DrawString(s, Font, foreground, physicalX + charOffsetX, physicalY + charOffsetY);
-                            }
+                                var physicalX = (float)xpos;
+                                var physicalY = (float)ypos;
+                                var physicalWidth = (float)charWidth;
+                                var physicalHeight = (float)charHeight;
+                                var s = area.GetCharacterAt(x + OffsetX, y + OffsetY);
+                                if (rowSelection.CharacterIsSelected(x + OffsetX))
+                                    g.FillRectangle(selection, physicalX, physicalY, physicalWidth, physicalHeight);
+                                if (x + OffsetX == area.CursorX && y + OffsetY == area.CursorY)
+                                {
+                                    g.FillRectangle(foreground, physicalX, physicalY, physicalWidth, physicalHeight);
+                                    if (!string.IsNullOrWhiteSpace(s))
+                                        g.DrawString(s, Font, background, physicalX + charOffsetX, physicalY + charOffsetY);
+                                }
+                                else
+                                {
+                                    g.DrawString(s, Font, foreground, physicalX + charOffsetX, physicalY + charOffsetY);
+                                }
 #if DEBUG
-                            var whitespace = area.GetCharacterOrWhitespaceAt(x + OffsetX, y + OffsetY);
-                            if (whitespace != null)
-                            {
-                                if (whitespace == " ")
-                                    g.FillRectangle(Brushes.Yellow, (physicalX + (int)(charWidth / 2)) - 1, (physicalY + (int)(charHeight / 2)) - 1, 2, 2);
-                                else if (whitespace[0] == 9)
-                                    g.FillRectangle(Brushes.Pink, (physicalX + (int)(charWidth / 2)) - 1, (physicalY + (int)(charHeight / 2)) - 1, 2, 2);
-                            }
+                                var whitespace = area.GetCharacterOrWhitespaceAt(x + OffsetX, y + OffsetY);
+                                if (whitespace != null)
+                                {
+                                    if (whitespace == " ")
+                                        g.FillRectangle(Brushes.Yellow, (physicalX + (int)(charWidth / 2)) - 1,
+                                            (physicalY + (int)(charHeight / 2)) - 1, 2, 2);
+                                    else if (whitespace[0] == 9)
+                                        g.FillRectangle(Brushes.Pink, (physicalX + (int)(charWidth / 2)) - 1,
+                                            (physicalY + (int)(charHeight / 2)) - 1, 2, 2);
+                                }
 #endif
-                            xpos += charWidth;
-                        }
+                                xpos += charWidth;
+                            }
 
-                        xpos = viewportX;
-                        ypos += charHeight;
+                            xpos = viewportX;
+                            ypos += charHeight;
+                        }
                     }
                 }
             }
