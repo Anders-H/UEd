@@ -43,6 +43,13 @@
             this.zoomInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.restoreZoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.scrollLeftCtrlLeftToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.scrollRightCtrlRightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.scrollUpCtrlUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.scrollDownCtrlDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.scrollIntoViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -129,6 +136,13 @@
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.scrollLeftCtrlLeftToolStripMenuItem,
+            this.scrollRightCtrlRightToolStripMenuItem,
+            this.scrollUpCtrlUpToolStripMenuItem,
+            this.scrollDownCtrlDownToolStripMenuItem,
+            this.toolStripMenuItem4,
+            this.scrollIntoViewToolStripMenuItem,
+            this.toolStripMenuItem3,
             this.zoomInToolStripMenuItem,
             this.restoreZoomToolStripMenuItem,
             this.zoomOutToolStripMenuItem});
@@ -163,6 +177,51 @@
             this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.zoomOutToolStripMenuItem.Text = "Zoom out (Ctrl -)";
             this.zoomOutToolStripMenuItem.Click += new System.EventHandler(this.zoomOutToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(212, 6);
+            // 
+            // scrollLeftCtrlLeftToolStripMenuItem
+            // 
+            this.scrollLeftCtrlLeftToolStripMenuItem.Name = "scrollLeftCtrlLeftToolStripMenuItem";
+            this.scrollLeftCtrlLeftToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.scrollLeftCtrlLeftToolStripMenuItem.Text = "Scroll left (Ctrl Left)";
+            this.scrollLeftCtrlLeftToolStripMenuItem.Click += new System.EventHandler(this.ScrollLeftCtrlLeftToolStripMenuItem_Click);
+            // 
+            // scrollRightCtrlRightToolStripMenuItem
+            // 
+            this.scrollRightCtrlRightToolStripMenuItem.Name = "scrollRightCtrlRightToolStripMenuItem";
+            this.scrollRightCtrlRightToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.scrollRightCtrlRightToolStripMenuItem.Text = "Scroll right (Ctrl Right)";
+            this.scrollRightCtrlRightToolStripMenuItem.Click += new System.EventHandler(this.ScrollRightCtrlRightToolStripMenuItem_Click);
+            // 
+            // scrollUpCtrlUpToolStripMenuItem
+            // 
+            this.scrollUpCtrlUpToolStripMenuItem.Name = "scrollUpCtrlUpToolStripMenuItem";
+            this.scrollUpCtrlUpToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.scrollUpCtrlUpToolStripMenuItem.Text = "Scroll up (Ctrl Up)";
+            this.scrollUpCtrlUpToolStripMenuItem.Click += new System.EventHandler(this.ScrollUpCtrlUpToolStripMenuItem_Click);
+            // 
+            // scrollDownCtrlDownToolStripMenuItem
+            // 
+            this.scrollDownCtrlDownToolStripMenuItem.Name = "scrollDownCtrlDownToolStripMenuItem";
+            this.scrollDownCtrlDownToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.scrollDownCtrlDownToolStripMenuItem.Text = "Scroll down (Ctrl Down)";
+            this.scrollDownCtrlDownToolStripMenuItem.Click += new System.EventHandler(this.ScrollDownCtrlDownToolStripMenuItem_Click);
+            // 
+            // scrollIntoViewToolStripMenuItem
+            // 
+            this.scrollIntoViewToolStripMenuItem.Name = "scrollIntoViewToolStripMenuItem";
+            this.scrollIntoViewToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.scrollIntoViewToolStripMenuItem.Text = "Scroll into view (Ctrl P)";
+            this.scrollIntoViewToolStripMenuItem.Click += new System.EventHandler(this.ScrollIntoViewToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(212, 6);
             // 
             // MainWindow
             // 
@@ -210,6 +269,13 @@
         private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem scrollLeftCtrlLeftToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem scrollRightCtrlRightToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem scrollUpCtrlUpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem scrollDownCtrlDownToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem scrollIntoViewToolStripMenuItem;
     }
 }
 

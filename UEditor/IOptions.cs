@@ -9,6 +9,7 @@ namespace UEditor
         Color CursorColor { get; }
         Color SelectionColor { get; }
         bool ScrollAhead { get; }
+        bool ShowColumnNumber { get; }
         bool ShowCurrentLineNumber { get; }
         bool ShowTotalLines { get; }
     }

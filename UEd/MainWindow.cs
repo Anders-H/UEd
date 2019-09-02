@@ -128,6 +128,21 @@ namespace UEd
         {
             switch (keyData)
             {
+                case Keys.Up | Keys.Control:
+                    ScrollUpCtrlUpToolStripMenuItem_Click(null, null);
+                    return true;
+                case Keys.Down | Keys.Control:
+                    ScrollDownCtrlDownToolStripMenuItem_Click(null, null);
+                    return true;
+                case Keys.Left | Keys.Control:
+                    ScrollLeftCtrlLeftToolStripMenuItem_Click(null, null);
+                    return true;
+                case Keys.Right | Keys.Control:
+                    ScrollRightCtrlRightToolStripMenuItem_Click(null, null);
+                    return true;
+                case Keys.P | Keys.Control:
+                    ScrollIntoViewToolStripMenuItem_Click(null, null);
+                    return true;
                 case Keys.Tab | Keys.Shift:
                     _inputHandler.Outdent(_area, _view);
                     Changed = true;
@@ -151,6 +166,19 @@ namespace UEd
         }
 
         private void viewToolStripMenuItem_DropDownOpened(object sender, EventArgs e)
+        {
+            EnableScrollItems();
+            EnableZoomItems();
+        }
+
+        private void EnableScrollItems()
+        {
+            scrollIntoViewToolStripMenuItem.Enabled = !_view.IsInView(_area.CursorX, _area.CursorY);
+            scrollLeftCtrlLeftToolStripMenuItem.Enabled = _view.OffsetX > 0;
+            scrollUpCtrlUpToolStripMenuItem.Enabled = _view.OffsetY > 0;
+        }
+
+        private void EnableZoomItems()
         {
             var inName = CharacterView.ZoomLevels.GetNextZoomInName();
             if (string.IsNullOrWhiteSpace(inName))
@@ -476,5 +504,37 @@ namespace UEd
 
         private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e) =>
             SaveDocumentAs();
+
+        private void ScrollLeftCtrlLeftToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_view.OffsetX > 0)
+                _view.OffsetX--;
+            Invalidate();
+        }
+
+        private void ScrollRightCtrlRightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _view.OffsetX++;
+            Invalidate();
+        }
+
+        private void ScrollUpCtrlUpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_view.OffsetY > 0)
+                _view.OffsetY--;
+            Invalidate();
+        }
+
+        private void ScrollDownCtrlDownToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _view.OffsetY++;
+            Invalidate();
+        }
+
+        private void ScrollIntoViewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _view.EnsurePositionIsVisible(_area.CursorX, _area.CursorY);
+            Invalidate();
+        }
     }
 }

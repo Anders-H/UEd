@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Diagnostics.Eventing.Reader;
+using System.Drawing;
 using UEditor.Zoom;
 
 namespace UEditor
@@ -15,6 +16,12 @@ namespace UEditor
         {
             _options = options;
         }
+
+        public bool IsInView(int x, int y) =>
+            x >= OffsetX
+            && x < OffsetX + ZoomLevels.GetCurrentZoom().Columns
+            && y >= OffsetY
+            && y < OffsetY + ZoomLevels.GetCurrentZoom().Rows;
 
         public void EnsurePositionIsVisible(int x, int y)
         {
@@ -87,9 +94,16 @@ namespace UEditor
                     }
                 }
             }
-            if (!_options.ShowCurrentLineNumber && !_options.ShowTotalLines)
+            if (!_options.ShowCurrentLineNumber && !_options.ShowTotalLines && !_options.ShowColumnNumber)
                 return;
-            var row = _options.ShowCurrentLineNumber && _options.ShowTotalLines ? $"{area.CursorY + 1}/{area.RowCount}"
+            string row;
+            if (_options.ShowColumnNumber && (_options.ShowCurrentLineNumber || _options.ShowTotalLines))
+                row = $"{area.CursorX + 1}, ";
+            else if (_options.ShowColumnNumber)
+                row = $"{area.CursorX + 1}";
+            else
+                row = "";
+            row += _options.ShowCurrentLineNumber && _options.ShowTotalLines ? $"{area.CursorY + 1}/{area.RowCount}"
                 : _options.ShowCurrentLineNumber
                 ? $"{area.CursorY + 1}" : $"{area.RowCount}";
             var m = g.MeasureString(row, secondaryFont);

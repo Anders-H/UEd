@@ -10,6 +10,7 @@ namespace UEd
         private Color? _cursorColor;
         private Color? _selectionColor;
         private bool? _scrollAhead;
+        private bool? _showColumnNumber;
         private bool? _showCurrentLineNumber;
         private bool? _showTotalLines;
 
@@ -60,6 +61,16 @@ namespace UEd
                 if (_scrollAhead == null)
                     _scrollAhead = GetBool(nameof(ScrollAhead), true);
                 return _scrollAhead.Value;
+            }
+        }
+
+        public bool ShowColumnNumber
+        {
+            get
+            {
+                if (_showColumnNumber == null)
+                    _showColumnNumber = GetBool(nameof(ShowColumnNumber), true);
+                return _showColumnNumber.Value;
             }
         }
 
