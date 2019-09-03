@@ -59,6 +59,9 @@ namespace UEditor
                 case 13:
                     area.TypeEnter(view);
                     return true;
+                case 27:
+                    area.Selections.Clear();
+                    return false;
             }
             if (!area.TypeCharacter(c, view, false))
                 return false;

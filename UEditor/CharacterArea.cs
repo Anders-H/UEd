@@ -10,10 +10,10 @@ namespace UEditor
     {
         private readonly IOptions _options;
         private readonly List<string> _rows = new List<string>();
-        private readonly SelectionList _selections = new SelectionList();
         public int CursorX { get; set; }
         public int CursorY { get; set; }
-        
+        public SelectionList Selections { get; } = new SelectionList();
+
         public CharacterArea(IOptions options)
         {
             _options = options;
@@ -22,17 +22,27 @@ namespace UEditor
 
         public void Clear()
         {
+            Selections.Clear();
             _rows.Clear();
             CursorX = 0;
             CursorY = 0;
             _rows.Add("");
         }
 
+        public bool HasText()
+        {
+            if (_rows.Count <= 0)
+                return false;
+            if (_rows.Count == 1)
+                return !string.IsNullOrEmpty(_rows[0]);
+            return true;
+        }
+
         public int RowCount =>
             _rows.Count;
 
         public RowSelection GetRowSelection(int y) =>
-            _selections.GetRowSelection(y);
+            Selections.GetRowSelection(y);
 
         public void SetData(string text)
         {
@@ -427,6 +437,57 @@ namespace UEditor
             var s2 = s.Trim();
             var result = s.IndexOf(s2, StringComparison.Ordinal);
             return result < 0 ? 0 : result;
+        }
+
+        public bool HasSelection() =>
+            Selections.Count > 0;
+
+        public void SelectAll()
+        {
+            Selections.ClearSelection();
+            Selections.StartAt(0, 0);
+            for (var i = 0; i < _rows.Count; i++)
+                Selections.Add(RowSelection.FullRowSelection(i));
+        }
+
+        public void SelectionUp(CharacterView view)
+        {
+
+        }
+
+        public void SelectionDown(CharacterView view)
+        {
+
+        }
+
+        public void SelectionLeft(CharacterView view)
+        {
+
+        }
+
+        public void SelectionRight(CharacterView view)
+        {
+
+        }
+
+        public void SelectionPageUp(CharacterView view)
+        {
+
+        }
+
+        public void SelectionPageDown(CharacterView view)
+        {
+
+        }
+
+        public void SelectionHome(CharacterView view)
+        {
+
+        }
+
+        public void SelectionEnd(CharacterView view)
+        {
+
         }
     }
 }

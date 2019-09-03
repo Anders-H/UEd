@@ -128,6 +128,30 @@ namespace UEd
         {
             switch (keyData)
             {
+                case Keys.Up | Keys.Shift:
+                    _area.SelectionUp(_view);
+                    return true;
+                case Keys.Down | Keys.Shift:
+                    _area.SelectionDown(_view);
+                    return true;
+                case Keys.Left | Keys.Shift:
+                    _area.SelectionLeft(_view);
+                    return true;
+                case Keys.Right | Keys.Shift:
+                    _area.SelectionRight(_view);
+                    return true;
+                case Keys.Home | Keys.Shift:
+                    _area.SelectionHome(_view);
+                    return true;
+                case Keys.End | Keys.Shift:
+                    _area.SelectionEnd(_view);
+                    return true;
+                case Keys.PageUp | Keys.Shift:
+                    _area.SelectionPageUp(_view);
+                    return true;
+                case Keys.PageDown | Keys.Shift:
+                    _area.SelectionPageDown(_view);
+                    return true;
                 case Keys.Up | Keys.Control:
                     ScrollUpCtrlUpToolStripMenuItem_Click(null, null);
                     return true;
@@ -535,6 +559,51 @@ namespace UEd
         {
             _view.EnsurePositionIsVisible(_area.CursorX, _area.CursorY);
             Invalidate();
+        }
+
+        private void SelectAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!_area.HasText())
+                return;
+            _area.SelectAll();
+            Invalidate();
+        }
+
+        private void SelectNoneToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _area.Selections.Clear();
+            Invalidate();
+        }
+
+        private void EditToolStripMenuItem_DropDownOpened(object sender, EventArgs e)
+        {
+            selectAllToolStripMenuItem.Enabled = _area.HasText();
+            selectNoneToolStripMenuItem.Enabled = _area.HasSelection();
+        }
+
+        private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void RedoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

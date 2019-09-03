@@ -9,6 +9,13 @@ namespace UEditor.Selection
         public int RangeStart { get; set; }
         public int RangeLength { get; set; }
 
+        public static RowSelection FullRowSelection(int lineIndex) =>
+            new RowSelection
+            {
+                LineIndex = lineIndex,
+                SelectionType = SelectionType.FullRow
+            };
+
         public bool CharacterIsSelected(int x)
         {
             switch (SelectionType)
