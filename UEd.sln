@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UEd", "UEd\UEd.csproj", "{C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UEditor", "UEditor\UEditor.csproj", "{0A443941-2C2D-4F32-94D2-6649826D99DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UEditorTests", "UEditorTests\UEditorTests.csproj", "{59EEE97B-4427-4009-A809-2DCEABF2F9CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{0A443941-2C2D-4F32-94D2-6649826D99DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A443941-2C2D-4F32-94D2-6649826D99DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A443941-2C2D-4F32-94D2-6649826D99DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59EEE97B-4427-4009-A809-2DCEABF2F9CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59EEE97B-4427-4009-A809-2DCEABF2F9CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59EEE97B-4427-4009-A809-2DCEABF2F9CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59EEE97B-4427-4009-A809-2DCEABF2F9CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

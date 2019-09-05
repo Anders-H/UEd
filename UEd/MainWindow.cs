@@ -197,7 +197,7 @@ namespace UEd
 
         private void EnableScrollItems()
         {
-            scrollIntoViewToolStripMenuItem.Enabled = !_view.IsInView(_area.CursorX, _area.CursorY);
+            scrollIntoViewToolStripMenuItem.Enabled = !_view.IsInView(_area.Cursor);
             scrollLeftCtrlLeftToolStripMenuItem.Enabled = _view.OffsetX > 0;
             scrollUpCtrlUpToolStripMenuItem.Enabled = _view.OffsetY > 0;
         }
@@ -245,7 +245,7 @@ namespace UEd
         private void zoomInToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CharacterView.ZoomLevels.ZoomIn();
-            _view.EnsurePositionIsVisible(_area.CursorX, _area.CursorY);
+            _view.EnsurePositionIsVisible(_area.Cursor);
             _recalcFontSize = true;
             Invalidate();
         }
@@ -253,7 +253,7 @@ namespace UEd
         private void restoreZoomToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CharacterView.ZoomLevels.Restore();
-            _view.EnsurePositionIsVisible(_area.CursorX, _area.CursorY);
+            _view.EnsurePositionIsVisible(_area.Cursor);
             _recalcFontSize = true;
             Invalidate();
         }
@@ -261,7 +261,7 @@ namespace UEd
         private void zoomOutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CharacterView.ZoomLevels.ZoomOut();
-            _view.EnsurePositionIsVisible(_area.CursorX, _area.CursorY);
+            _view.EnsurePositionIsVisible(_area.Cursor);
             _recalcFontSize = true;
             Invalidate();
         }
@@ -322,8 +322,7 @@ namespace UEd
             }
 
             _area.SetData(fileContent);
-            _view.OffsetX = 0;
-            _view.OffsetY = 0;
+            _view.SetOffset(0, 0);
             Filename = fi.FullName;
             Changed = false;
             Invalidate();
@@ -557,7 +556,7 @@ namespace UEd
 
         private void ScrollIntoViewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _view.EnsurePositionIsVisible(_area.CursorX, _area.CursorY);
+            _view.EnsurePositionIsVisible(_area.Cursor);
             Invalidate();
         }
 
@@ -604,6 +603,13 @@ namespace UEd
         private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void SelectCurrentRowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _area.Selections.Clear();
+            _area.SelectRow(_area.CursorY);
+            Invalidate();
         }
     }
 }

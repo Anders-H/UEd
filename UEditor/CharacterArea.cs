@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using UEditor.Selection;
@@ -20,12 +22,20 @@ namespace UEditor
             Clear();
         }
 
+        public Point Cursor =>
+            new Point(CursorX, CursorY);
+
+        private void SetCursor(int x, int y)
+        {
+            CursorX = x;
+            CursorY = y;
+        }
+
         public void Clear()
         {
             Selections.Clear();
             _rows.Clear();
-            CursorX = 0;
-            CursorY = 0;
+            SetCursor(0, 0);
             _rows.Add("");
         }
 
@@ -54,8 +64,7 @@ namespace UEditor
             var rows = Regex.Split(text, @"\n");
             _rows.Clear();
             _rows.AddRange(rows);
-            CursorX = 0;
-            CursorY = 0;
+            SetCursor(0, 0);
         }
 
         public string GetData()
@@ -136,9 +145,6 @@ namespace UEditor
                 JumpInHorizontalView(view);
         }
 
-        public string GetCharacter() =>
-            GetCharacterAt(CursorX, CursorY);
-
         public string GetCharacterAt(int x, int y)
         {
             if (y < 0 || y >= _rows.Count)
@@ -148,9 +154,6 @@ namespace UEditor
                 return null;
             return row.Length > x ? row.Substring(x, 1) : null;
         }
-
-        public string GetCharacterOrWhitespace() =>
-            GetCharacterOrWhitespaceAt(CursorX, CursorY);
 
         public string GetCharacterOrWhitespaceAt(int x, int y)
         {
@@ -234,11 +237,16 @@ namespace UEditor
             if (_options.ScrollAhead)
                 view.EnsurePositionIsVisible(CursorX + viewOffsetX, CursorY + viewOffsetY);
             else
-                view.EnsurePositionIsVisible(CursorX, CursorY);
+                view.EnsurePositionIsVisible(Cursor);
         }
 
         public void TypeDelete(CharacterView view)
         {
+            if (HasSelection())
+            {
+                DeleteSelection(view);
+                return;
+            }
             var len = CurrentRowLength;
             if (len == 0 && CursorX == 0)
             {
@@ -271,6 +279,32 @@ namespace UEditor
                 var right = _rows[CursorY].Substring(CursorX + 1);
                 _rows[CursorY] = left + right;
             }
+        }
+
+        private void DeleteSelection(CharacterView view)
+        {
+            var selectionOperations = Selections.OrderByDescending(x => x.LineIndex).ToList();
+            foreach (var selectionOperation in selectionOperations)
+            {
+                switch (selectionOperation.SelectionType)
+                {
+                    case SelectionType.NotSelected:
+                        continue;
+                    case SelectionType.FullRow:
+                        _rows.RemoveAt(selectionOperation.LineIndex);
+                        continue;
+                    case SelectionType.Range:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+            if (_rows.Count < 1)
+                _rows.Add("");
+            while (CursorY >= _rows.Count)
+                CursorY--;
+            Selections.ClearSelection();
+            view.EnsurePositionIsVisible(Cursor);
         }
 
         public void DeleteAt(int x, int y)
@@ -448,6 +482,13 @@ namespace UEditor
             Selections.StartAt(0, 0);
             for (var i = 0; i < _rows.Count; i++)
                 Selections.Add(RowSelection.FullRowSelection(i));
+        }
+
+        public void SelectRow(int y)
+        {
+            Selections.ClearSelection();
+            Selections.StartAt(0, y);
+            Selections.Add(RowSelection.FullRowSelection(y));
         }
 
         public void SelectionUp(CharacterView view)

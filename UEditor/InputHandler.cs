@@ -84,12 +84,11 @@ namespace UEditor
                 return;
             for (var t = 0; t < 3; t++)
             {
-                if (area.CurrentRow[0] == ' ')
-                {
-                    area.DeleteAt(0, area.CursorY);
-                    if (area.CursorX > 0)
-                        area.CursorX--;
-                }
+                if (area.CurrentRow[0] != ' ')
+                    continue;
+                area.DeleteAt(0, area.CursorY);
+                if (area.CursorX > 0)
+                    area.CursorX--;
             }
             var offsetX = _options.ScrollAhead && area.CursorX > 0 ? -1 : 0;
             view.EnsurePositionIsVisible(area.CursorX + offsetX, area.CursorY);

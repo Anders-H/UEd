@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Eventing.Reader;
-using System.Drawing;
+﻿using System.Drawing;
 using UEditor.Zoom;
 
 namespace UEditor
@@ -17,11 +16,23 @@ namespace UEditor
             _options = options;
         }
 
+        public void SetOffset(int x, int y)
+        {
+            OffsetX = x;
+            OffsetY = y;
+        }
+
+        public bool IsInView(Point p) =>
+            IsInView(p.X, p.Y);
+
         public bool IsInView(int x, int y) =>
             x >= OffsetX
             && x < OffsetX + ZoomLevels.GetCurrentZoom().Columns
             && y >= OffsetY
             && y < OffsetY + ZoomLevels.GetCurrentZoom().Rows;
+
+        public void EnsurePositionIsVisible(Point p) =>
+            EnsurePositionIsVisible(p.X, p.Y);
 
         public void EnsurePositionIsVisible(int x, int y)
         {
@@ -41,6 +52,8 @@ namespace UEditor
             var ypos = (double)viewportY;
             var charWidth = viewportWidth / (double)ZoomLevels.GetCurrentZoom().Columns;
             var charHeight = viewportHeight / (double)ZoomLevels.GetCurrentZoom().Rows;
+            var physicalWidth = (float)charWidth;
+            var physicalHeight = (float)charHeight;
             using (var background = new SolidBrush(_options.BackgroundColor))
             {
                 using (var foreground = new SolidBrush(_options.CursorColor))
@@ -54,24 +67,24 @@ namespace UEditor
                         for (var y = 0; y < ZoomLevels.GetCurrentZoom().Rows; y++)
                         {
                             var rowSelection = area.GetRowSelection(y + OffsetY);
+                            var physicalY = (float)ypos;
                             for (var x = 0; x < ZoomLevels.GetCurrentZoom().Columns; x++)
                             {
                                 var physicalX = (float)xpos;
-                                var physicalY = (float)ypos;
-                                var physicalWidth = (float)charWidth;
-                                var physicalHeight = (float)charHeight;
                                 var s = area.GetCharacterAt(x + OffsetX, y + OffsetY);
                                 if (rowSelection.CharacterIsSelected(x + OffsetX))
                                     g.FillRectangle(selection, physicalX, physicalY, physicalWidth, physicalHeight);
+                                var charX = physicalX + charOffsetX;
+                                var charY = physicalY + charOffsetY;
                                 if (x + OffsetX == area.CursorX && y + OffsetY == area.CursorY)
                                 {
                                     g.FillRectangle(foreground, physicalX, physicalY, physicalWidth, physicalHeight);
                                     if (!string.IsNullOrWhiteSpace(s))
-                                        g.DrawString(s, Font, background, physicalX + charOffsetX, physicalY + charOffsetY);
+                                        g.DrawString(s, Font, background, charX, charY);
                                 }
                                 else
                                 {
-                                    g.DrawString(s, Font, foreground, physicalX + charOffsetX, physicalY + charOffsetY);
+                                    g.DrawString(s, Font, foreground, charX, charY);
                                 }
 #if DEBUG
                                 var whitespace = area.GetCharacterOrWhitespaceAt(x + OffsetX, y + OffsetY);
